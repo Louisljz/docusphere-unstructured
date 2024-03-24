@@ -1,0 +1,9 @@
+streamlit
+psycopg2
+bcrypt
+langchain
+langchain_openai
+langchain_pinecone
+langchain_text_splitters
+langchain_community
+unstructured[docx,pptx,pdf]
