@@ -17,17 +17,8 @@ from langchain_openai import OpenAIEmbeddings
 
 langchain.debug = True
 
-@st.cache_resource
-def init_connection():
-    embeddings = OpenAIEmbeddings(model='text-embedding-3-small')
-    vector_store = PineconeVectorStore(index_name="docusphere", embedding=embeddings)
-    retriever = vector_store.as_retriever(search_kwargs={"namespace": st.session_state.user['id']})
-    qna_agent = QNAAgent(retriever)
-
-    return vector_store, qna_agent
-
-
-vector_store, qna_agent = init_connection()
+embeddings = OpenAIEmbeddings(model='text-embedding-3-small')
+vector_store = PineconeVectorStore(index_name="docusphere", embedding=embeddings)
 
 st.title('Docusphere 📃🌐')
 st.subheader(f'Hello {st.session_state["user"]["name"]}, welcome back!')
@@ -62,6 +53,9 @@ with tabs[0]:
 
 
 with tabs[1]:
+    retriever = vector_store.as_retriever(search_kwargs={"namespace": st.session_state.user['id']})
+    qna_agent = QNAAgent(retriever)
+
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
